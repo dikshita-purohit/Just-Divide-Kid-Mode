@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Just Divide — Kid Mode</title>
+<style>
+
+  :root{
+    --design-w:1440;
+    --design-h:1024;
+
+    --bg-pink: url("assets/Desktop_JustDivide_Game_2.png");
+    --turquoise: #17858f;
+    --panel-orange: #ffb366;
+
+    --slot-size:110px;
+    --gap:11px;
+    --right-width:240px;
+    --font-sans:"Segoe UI", Roboto, Arial, sans-serif;
+    --hint-color: rgb(81 195 195);
+}
+
+
+  html,body{height:auto;margin: 20px;background-image: var(--bg-pink);background-repeat: no-repeat;background-size: cover;background-position: center;background:var(--bg-pink);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;}
+  #root{width:100%;height:100%;display:flex;justify-content:center;align-items:center;padding:0;box-sizing:border-box;}
+
+
+  @keyframes float1{0%,100%{transform:translateY(0px);}50%{transform:translateY(-20px);}}
+  @keyframes float2{0%,100%{transform:translateY(0px);}50%{transform:translateY(20px);}}
+
+  .stage{
+    position:relative;
+    width: min(1320px, calc(100vw - 36px));
+    max-width: var(--design-w);
+    background: transparent;
+    border-radius:0;
+    padding:20px;
+    box-shadow: none;
+    box-sizing:border-box;
+    z-index:1;
+  }
+
+  /* Header */
+  .header{display:flex;align-items:center;justify-content:space-between;padding:4px 12px 16px;margin-bottom:-40px;}
+  .title-block{display:flex;flex-direction:column;gap:6px;align-items:center;flex:1;}
+  .title{font-size:52px;color:#001122;font-weight:900;letter-spacing:2px;text-transform:uppercase;text-shadow:3px 3px 0 rgba(0,0,0,0.1);}
+  .subtitle{font-size:35px; -webkit-text-stroke: 3px #794d00; color:#fdd7b2;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;;padding:8px 24px;border-radius:20px;}
+  .timer{font-size:26px;margin-top: 10%;margin-right: 10%;margin-left: 10%; color:#001122;font-weight:700;position:absolute;top:40px;left:30%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;}
+  .timer::before{content:'⏳';font-size:28px;}
+
+  .help-btn {position: absolute; top: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(145deg, #66ee88, #44cc66); border: 4px solid #fff;display: flex; align-items: center;justify-content: center;font-size: 36px;font-weight: 900;color: #fff;cursor: pointer;box-shadow: 0 6px 16px rgba(0,0,0,0.2);transition: transform 0.2s;}
+  .help-btn:hover {transform: scale(1.05);}
+  .help-btn .tooltip {display: none;position: absolute;top: 70px; left: 50%;transform: translateX(-50%);padding: 8px 18px;background: #44cc66;color: #000000;font-size: 18px;border-radius: 10px;white-space: nowrap;box-shadow: 0 2px 8px rgba(0,0,0,0.18);z-index: 10;}
+  .help-btn:hover .tooltip {display: block;}
+
+  .pausePlay-btn {position: absolute; top: 20px; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(145deg, #bf81f9, #8a44cc); border: 4px solid #fff;display: flex; align-items: center;justify-content: center;font-size: 36px;font-weight: 900;color: #fff;cursor: pointer;box-shadow: 0 6px 16px rgba(0,0,0,0.2);transition: transform 0.2s;}
+  .pausePlay-btn:hover {transform: scale(1.05);}
+  .pausePlay-btn .tooltip {display: none;position: absolute;top: 70px; left: 50%;transform: translateX(-50%);padding: 8px 18px;background: #8a44cc;color: #000000;font-size: 18px;border-radius: 10px;white-space: nowrap;box-shadow: 0 2px 8px rgba(0,0,0,0.18);z-index: 10;}
+  .pausePlay-btn:hover .tooltip {display: block;}
+
+  /* Cat + badges row */
+  .cat-badges{margin-top: 0px; display:flex;align-items:flex-end;justify-content:center;margin-bottom:20px;position:relative;}
+  .cat{width:480px; height:200px;display:flex;align-items:flex-end;justify-content:center;position:relative;z-index:5;margin-bottom:-60px;}
+  .cat img{max-width:180%;max-height:180%;object-fit:contain;}
+  .badge{width:250px;height:130px; display:flex; flex-direction:column;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size: 32px;position:relative;}
+  .badge.level{margin-top: 50px; background-image:url("assets/Levels and Score.png");background-repeat: no-repeat;background-size: cover;background-position: center;}
+  .badge.score{background-image:url("assets/Levels and Score.png");background-repeat: no-repeat;background-size: cover;background-position: center;}
+
+  /* main layout */
+  .content{display:flex;gap:32px;padding:0;align-items:center;justify-content:center;}
+  .left-area{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:0;}
+  .grid-wrap{
+    display:grid;
+    grid-template-columns:repeat(4, var(--slot-size));
+    grid-template-rows:repeat(4, var(--slot-size));
+    gap:var(--gap);
+    justify-content:center;
+    align-content:center;
+    padding:30px;
+    padding-top: 12.5%;
+    padding-bottom: 5%;
+    background: var(--turquoise);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border-radius:65px;
+    box-shadow:0 8px 24px rgba(0, 0, 0, 0.256);
+    border:20px solid #b5e7e7;
+  }
+
+  .slot{
+    width:var(--slot-size);
+    height:var(--slot-size);
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    box-sizing:border-box;
+    transition: box-shadow .12s, transform .12s;
+    overflow:visible;
+  }
+  .slot-bg{
+    position:absolute;left:0;top:0;width:90%;height:90%;border-radius:16px;z-index:0;
+    background: linear-gradient(145deg, #5ab8b8, #3a9999);
+    border:5px solid rgba(255,255,255,0.4);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.15);
+  }
+  .slot.hint::after{
+    content:'';
+    position:absolute;left:6px;top:6px;right:6px;bottom:6px;border-radius:12px;
+    box-shadow: 0 0 0 6px var(--hint-color) inset;
+    background-color: var(--hint-color);
+    z-index:1;
+    pointer-events:none;
+  }
+
+  .keep img{max-width:50%;max-height:50%;display:flex;margin-left: 25%;}
+  .trash img{max-width:50%;max-height:50%;display:flex;margin-left: 25%;}
+  /* square tile image container (makes tile fully visible and square) */
+  .tile {
+    width:var(--slot-size);
+    height:var(--slot-size);
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    font-size:32px;
+    color:#012;
+    position:absolute;
+    z-index:5;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    transition: transform .12s, opacity .12s;
+    user-select:none;
+    touch-action:none;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .tile.small { transform: scale(0.82); width: calc(var(--slot-size) * 0.82); height: calc(var(--slot-size) * 0.82); font-size:26px; }
+
+  /* right panel */
+  .right-panel{width:var(--right-width);background:linear-gradient(180deg, #ffcc77, #ffb366);border-radius:24px;padding:5px 5px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:16px;box-shadow:0 8px 24px rgba(0,0,0,0.2);border:25px solid #c27a33;}
+  .slot-box{width:140px;height:140px;border-radius:20px;padding:12px;display:flex;align-items:center;justify-content:center;position:relative;}
+  .label{font-weight:800;color:#003322;margin-top:8px;font-size:18px;text-transform:uppercase;letter-spacing:0.5px;}
+  .upcoming{display:flex;flex-direction:column;gap:16px;align-items:center;}
+
+  .trash-count{font-weight:800;color:#660000;margin-top:8px;font-size:16px;background:#ffeeee;padding:6px 14px;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+
+  /* controls */
+  .controls{font-size:18px;color:#000000;margin-top:16px;background:rgba(255,255,255,0.5);padding:8px 16px;border-radius:12px;}
+
+  /* overlay */
+  .overlay{position:fixed;left:0;top:0;right:0;bottom:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.35);z-index:9999;}
+  .overlay.show{display:flex;}
+  .gameover-panel{width:520px;height:360px;background:#fff;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:18px;}
+  .btn{padding:12px 18px;border-radius:10px;background:#66d0d6;border:none;font-weight:700;cursor:pointer;}
+
+  /* responsive */
+  @media (max-width:1000px){
+    :root{--slot-size:80px;--gap:10px;--right-width:180px;}
+    .title{font-size:32px;}
+    .subtitle{font-size:13px;padding:6px 16px;}
+    .timer{font-size:20px;top:20px;}
+    .cat{width:200px;height:140px;margin-bottom:-40px;}
+    .badge{width:160px;height:70px;font-size:24px;}
+    .help-btn{width:50px;height:50px;font-size:28px;top:15px;right:15px;}
+    .pausePlay-btn{width:50px;height:50px;font-size:28px;top:15px;right:15px;}
+    .slot-box{width:110px;height:110px;}
+    .grid-wrap{padding:20px;}
+    .controls{font-size:10px;padding:6px 12px;}
+  }
+</style>
+</head>
+<body>
+
+  <div id="root">
+    <div class="stage" id="stage">
+      <div class="header">
+        <div class="timer" id="timer">00:07</div>
+        <div class="pausePlay-btn" title="Pauseplay">||<span class="tooltip">Pause/Play</span></div>
+        <div class="help-btn" title="Help">?<span class="tooltip">Help</span></div>
+        <div class="title-block">
+          <div class="title">JUST DIVIDE</div>
+          <div class="subtitle">Divide with the numbers to solve the rows and columns.</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="left-area">
+          <div class="cat-badges">
+        <div class="badge level" id="levelBadge"style="top: 160px;left : 160px">LEVEL 1</div>
+        <div class="cat" id="cat"><img src="assets/Cat.png" alt="cat" onerror="this.style.display='none'"></div>
+        <div class="badge score" id="scoreBadge" style="top: 160px;right : 160px"><div id="scoreText">SCORE 40</div><div id="bestText" style="font-size:14px;margin-top:2px;font-weight:600;">Best: 0</div>
+      </div>
+      </div>
+          <div class="grid-wrap" id="gridWrap" aria-label="game-grid"></div>
+          <div class="controls">Controls: Z=Undo &nbsp; R=Restart &nbsp; G=Toggle Hints &nbsp; 1/2/3=Difficulty</div>
+        </div>
+
+        <div class="right-panel">
+          <!-- KEEP slot -->
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div class="slot-box" id="keepBox"></div>
+            <div class="label"style="color:green;font-size:30px;">Keep</div>
+          </div>
+
+          <!-- Upcoming: only 2 -->
+          <div class="upcoming" id="upcomingStack" aria-label="upcoming"></div>
+
+          <!-- Trash -->
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div class="trash-count" id="trashCount">Trash: 1</div>
+            <div class="slot-box" id="trashBox"></div>
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="gameover-panel" id="gameOverPanel">
+      <div style="font-size:28px;font-weight:800;">Game Over</div>
+      <div id="goScore" style="font-size:20px;"></div>
+      <div id="goBest" style="font-size:16px;color:#555;"></div>
+      <div style="display:flex;gap:12px;">
+        <button class="btn" id="btnRestart">Restart</button>
+      </div>
+    </div>
+  </div>
+
+<script src="main.js"></script>
+</body>
+</html>
